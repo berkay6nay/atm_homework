@@ -5,6 +5,8 @@ class Bank:
   atm_list = []
   customer_list = []
   transaction_list = []
+  account_list = []
+  
   def __init__(self, name, bank_code):
     self.__name = name
     self.__bank_code = bank_code
@@ -20,6 +22,9 @@ class Bank:
 
   def add_transaction(self , transaction): ## Transaction'ı bankanın transaction listesine ekle
     Bank.transaction_list.append(transaction)
+
+  
+    
 
   
 
@@ -39,6 +44,7 @@ class ATM:
   def authenticate_user(self , pin , customer):
     if pin == customer.get_card().get_card_pin():  ## Auth prototipi
       return True
+    else: False
     
   def get_screen(self):
     return self.__screen
@@ -54,6 +60,15 @@ class ATM:
         return customer
       
     return None
+  
+  
+  def find_customer_by_account_number(self , account_id):
+    for customer in Bank.customer_list:
+      if customer.get_account().get_account_number() == account_id:
+        return customer
+      
+    return None
+
 
 
 class CashDispenser:

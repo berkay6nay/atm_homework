@@ -2,7 +2,7 @@ from customer import Customer , Card, SavingAccount , CheckingAccount
 from constants import CustomerStatus
 from bank import Bank, ATM ,Screen
 from constants import TransactionType
-from transaction import BalanceInquiry,CashDeposit
+from transaction import BalanceInquiry,CashDeposit,Withdraw
 
 ##DAtabase'in Kurulumu
 bank = Bank(name = "YildizBank" , bank_code= "1" )
@@ -60,24 +60,54 @@ while True:
             if(selected_transaction == 4):
                 print("1 - 20$ \n 2 - 40$ \n 3 - 100$ \n 4 - Custom Amount \n 5 - Cancel") ## Withdraw tipinin seçilmesi
                 withdraw_type = int(input("Lütfen menüden istediğiniz işlemi seçiniz"))
-
-                if(withdraw_type == 1):
+                curr_balance = BalanceInquiry(customer_in_question.get_account().get_account_number()).return_balance()
+                flag = 0
+                if(withdraw_type == 1 and curr_balance >= 20 ):
                      ##balance'ın sorgulanması
-                     print(balance)
+                    withdraw = Withdraw(amount = 20 , account_id= customer_in_question.get_account().get_account_number())
+                    withdraw.withdraw_cash()
+                    print("20$ veriliyor")
+                    print("Kalan paraniz" + str(BalanceInquiry(customer_in_question.get_account().get_account_number()).return_balance()) + "$")
+                    flag += 1 
 
-                     if(balance >= 20):
-                         pass
-                         
-                        
+                elif(withdraw_type == 2 and curr_balance >= 40):
+                    withdraw = Withdraw(amount = 40 , account_id= customer_in_question.get_account().get_account_number())
+                    withdraw.withdraw_cash()
+                    print("40$ veriliyor")
+                    print("Kalan paraniz" + str(BalanceInquiry(customer_in_question.get_account().get_account_number()).return_balance()) + "$")
+                    flag += 1 
+                elif(withdraw_type == 3 and curr_balance >= 100):
+                    withdraw = Withdraw(amount = 100 , account_id= customer_in_question.get_account().get_account_number())
+                    withdraw.withdraw_cash()
+                    print("100$ veriliyor")
+                    print("Kalan paraniz" + str(BalanceInquiry(customer_in_question.get_account().get_account_number()).return_balance()) + "$")
+                    flag += 1 
 
-                    
+                elif(withdraw_type == 4):
+                    custom_miktar = int(input("Cekmek istediginiz miktari giriniz"))
+                    if(custom_miktar <= curr_balance):
+                        withdraw = Withdraw(amount = custom_miktar , account_id= customer_in_question.get_account().get_account_number())
+                        withdraw.withdraw_cash()
+                        print(str(custom_miktar) +"$ " + " veriliyor")
+                        print("Kalan paraniz" + str(BalanceInquiry(customer_in_question.get_account().get_account_number()).return_balance()) + "$")
 
-                    
+                    else:print("Yetersiz Bakiye")
 
+                
 
-                if(withdraw_type == 5):
-                    print("Kartiniz veriliyor")
+                elif(withdraw_type == 5):
+                    print("Kart veriliyor")
                     break
+                     
+                if(flag == 0):
+                    print("YetersizBakiye")        
+
+                    
+
+                    
+
+
+                
                 
 
         else: 

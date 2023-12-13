@@ -68,11 +68,20 @@ class CashDeposit(Deposit):
 
 
 class Withdraw(Transaction):
-    def __init__(self, amount):
+    def __init__(self, amount , account_id):
         self.__amount = amount
+        self.__account_id = account_id
 
     def get_amount(self):
         return self.__amount
+    
+    def withdraw_cash(self):
+
+        for account in Bank.account_list:
+            if self.__account_id == account.get_account_number():
+                curr_account = account
+        curr_account.update_balance(-(self.__amount))
+
 
 
 class Transfer(Transaction):

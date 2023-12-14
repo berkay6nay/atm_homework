@@ -51,7 +51,7 @@ class ATM:
     
 
   def make_transaction(self, customer, transaction):
-    None
+    transaction.make_transation(customer = customer)
   
   
   def find_customer_by_card_number(self, card_number): ##Girilen card number için card'ın customer'ını döndür , yoksa None döndür
@@ -62,7 +62,7 @@ class ATM:
     return None
   
   
-  def find_customer_by_account_number(self , account_id):
+  def find_customer_by_account_number(self , account_id): ##Account number ile customer sorgusu
     for customer in Bank.customer_list:
       if customer.get_account().get_account_number() == account_id:
         return customer

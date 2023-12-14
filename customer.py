@@ -14,11 +14,11 @@ class Customer:
         self.__account = Account(account_number= account_number)
         
 
-    def make_transaction(self, transaction):
-        None
+    def make_transaction(self, transaction , atm):
+        atm.make_transaction(transaction = transaction , customer = self)
 
-    """def get_billing_address(self): 
-        None"""
+    def get_billing_address(self): 
+        None
     
     def get_name(self):
         return self.__name

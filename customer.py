@@ -1,7 +1,7 @@
 # For simplicity, we are not defining getter and setter functions. The reader can
 # assume that all class attributes are private and accessed through their respective
 # public getter methods and modified only through their public methods function.
-from bank import Bank
+
 
 class Customer:
     def __init__(self, name, address, email, phone, status ,card_number,  card_expiry, card_pin, account_number):
@@ -32,6 +32,7 @@ class Customer:
     
     def get_account(self):
         return self.__account
+    
 
 
 class Card:
@@ -56,6 +57,7 @@ class Account:
         self.__account_number = account_number
         self.__total_balance = 0.0
         self.__available_balance = 0.0
+        from bank import Bank
         Bank.account_list.append(self)
 
     def get_available_balance(self):

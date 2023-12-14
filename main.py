@@ -6,15 +6,9 @@ from transaction import BalanceInquiry,CashDeposit,Withdraw
 
 ##DAtabase'in Kurulumu
 bank = Bank(name = "YildizBank" , bank_code= "1" )
-atm1 = ATM(id=1 , location="DummyAddress1")
-
-
-customer1 = Customer(name="Name1" , email="dummy@gmail.com", phone="1111" , status= CustomerStatus.ACTIVE ,address="Istanbul" ,card_number="1111", card_expiry="31.07.2001" , card_pin=1234, account_number = 31)
-
-
-
-bank.add_atm(atm1)
-bank.add_customer(customer=customer1)
+bank.read_customer_from_text()
+bank.read_atm_from_text()
+atm1 = Bank.atm_list[0]
 
 
 

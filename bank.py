@@ -1,5 +1,7 @@
 from abc import ABC
-from constants import TransactionType
+from constants import TransactionType , CustomerStatus
+from customer import Customer
+
 
 class Bank:
   atm_list = []
@@ -22,6 +24,39 @@ class Bank:
 
   def add_transaction(self , transaction): ## Transaction'ı bankanın transaction listesine ekle
     Bank.transaction_list.append(transaction)
+
+  def add_account(self , account):
+    Bank.account_list.append(account)
+
+
+  def read_customer_from_text(self):
+        try:
+            with open("customer.txt", "r") as file:
+                for line in file:
+                    data = line.strip().split(',')
+                    name , address, email, phone, status ,card_number,  card_expiry, card_pin, account_number = str(data[0]) ,str(data[1]) , str(data[2]) , str(data[3]), data[4], str(data[5]) , str(data[6]) , int(data[7]) , int(data[8])
+                    customer = Customer(name,address,email,phone,status,card_number,card_expiry,card_pin,account_number)
+                    Bank.customer_list.append(customer)
+
+        except FileNotFoundError:
+            print("Customer file not found. Starting with an empty library.")
+
+
+  def read_atm_from_text(self):
+        try:
+            with open("atm.txt", "r") as file:
+                for line in file:
+                    data = line.strip().split(',')
+                    id , location = int(data[0]) , str(data[1])
+                    atm = ATM(id , location)
+                    Bank.atm_list.append(atm)
+                   
+
+        except FileNotFoundError:
+            print("ATM file not found. Starting with an empty library.")
+
+
+  
 
   
     

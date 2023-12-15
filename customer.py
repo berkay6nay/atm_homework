@@ -37,6 +37,10 @@ class Customer:
     
     def set_account(self ,account_number):
         self.__account = Account( account_number = account_number)
+
+    def change_card_pin(self , new_pin):
+        self.get_card().__pin = new_pin ## Pin güncellendiğinde customer listesindeki uygun customer'ın pin field'ı güncellenmelidir
+        
     
 
 

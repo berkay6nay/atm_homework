@@ -12,8 +12,7 @@ bank.read_customer_from_text()
 bank.read_atm_from_text()
 atm1 = Bank.atm_list[0]
 
-for customer in Bank.customer_list:
-    print(str(customer.get_account().get_account_number()))
+
 
 
 
@@ -31,6 +30,7 @@ while True:
     customer_in_question = atm1.find_customer_by_card_number(card_number= card_no)
 
     if customer_in_question: ##Sorgulanan customer db'de var ise
+        
         if atm1.authenticate_user(pin= card_pin , customer= customer_in_question): ##  auth işlemi gerçekleşirse transaction kısmına geçilebilir
             
             screen = atm1.get_screen()
@@ -38,6 +38,8 @@ while True:
             screen.show_message("Lütfen Yapmak Istediginiz Islemi Seciniz \n")
             for transaction_type in TransactionType:
                 screen.show_message(f"{transaction_type.value}. {transaction_type.name.replace('_', ' ')}") ##menünün konsola yazdırılması
+
+            
             
             selected_transaction = int(input("Seçmek istediğiniz işlem için menüden uygun sayiyi giriniz \n")) #Transaction'ın seçilmesi
 
@@ -54,46 +56,76 @@ while True:
             if(selected_transaction == 3):
                 pass
 
-            if(selected_transaction == 4): ## Para Çekme
-                print("Çekmek istediginiz miktari seciniz \n")
-                print("1 - 20$ \n 2 - 40$ \n 3 - 100$ \n 4 - Custom Amount \n 5 - Cancel") ## Withdraw tipinin seçilmesi
-                withdraw_type = int(input("Lütfen menüden istediğiniz işlemi seçiniz"))
-                curr_balance = customer_in_question.get_account().get_available_balance()
-                flag = 0 ##If statementların kısaltılması için flag değişkeni tanımlanmıştır
-                if(withdraw_type == 1 and curr_balance >= 20 ): ## Custom withdraw - 20$
-                    customer_in_question.make_transaction(transaction = Withdraw(amount=20, account_id=customer_in_question.get_account().get_account_number()) , atm = atm1)
-                    flag += 1 
+            
 
-                elif(withdraw_type == 2 and curr_balance >= 40): ## Custom withdraw - 40$
-                    customer_in_question.make_transaction(transaction = Withdraw(amount=40, account_id=customer_in_question.get_account().get_account_number()) , atm = atm1)
-                    flag += 1 
-                   
-                elif(withdraw_type == 3 and curr_balance >= 100): ## Custom withdraw - 100$
-                    customer_in_question.make_transaction(transaction = Withdraw(amount=100, account_id=customer_in_question.get_account().get_account_number()) , atm = atm1)
-                    flag += 1 
+                if(selected_transaction == 4): ## Para Çekme
+                    while True: ## Yetersiz bakiye durumunda kullanıcının para çekme menüsüne dönmesi için while döngüsü tanımlandı.
+                        print("Çekmek istediginiz miktari seciniz \n")
+                        print("1 - 20$ \n 2 - 40$ \n 3 - 100$ \n 4 - Custom Amount \n 5 - Cancel") ## Withdraw tipinin seçilmesi
+                        withdraw_type = int(input("Lütfen menüden istediğiniz işlemi seçiniz"))
+                        curr_balance = customer_in_question.get_account().get_available_balance()
+                        flag = 0 ##If statementların kısaltılması için flag değişkeni tanımlanmıştır
+                        if(withdraw_type == 1 and curr_balance >= 20 ): ## Custom withdraw - 20$
+                            customer_in_question.make_transaction(transaction = Withdraw(amount=20, account_id=customer_in_question.get_account().get_account_number()) , atm = atm1)
+                            flag += 1 
 
-                elif(withdraw_type == 4): ## Kullanıcı tarafından girilen amount
-                    custom_miktar = int(input("Cekmek istediginiz miktari giriniz"))
-                    if(custom_miktar <= curr_balance):
-                        customer_in_question.make_transaction(transaction = Withdraw(amount=custom_miktar, account_id=customer_in_question.get_account().get_account_number()) , atm = atm1)
-                        flag += 1 
+                        elif(withdraw_type == 2 and curr_balance >= 40): ## Custom withdraw - 40$
+                            customer_in_question.make_transaction(transaction = Withdraw(amount=40, account_id=customer_in_question.get_account().get_account_number()) , atm = atm1)
+                            flag += 1 
+                        
+                        elif(withdraw_type == 3 and curr_balance >= 100): ## Custom withdraw - 100$
+                            customer_in_question.make_transaction(transaction = Withdraw(amount=100, account_id=customer_in_question.get_account().get_account_number()) , atm = atm1)
+                            flag += 1 
 
-                elif(withdraw_type == 5):
-                    print("Kart veriliyor")
-                    break
-                     
-                if(flag == 0):
-                    print("Yetersiz Bakiye")   
+                        elif(withdraw_type == 4): ## Kullanıcı tarafından girilen amount
+                            custom_miktar = int(input("Cekmek istediginiz miktari giriniz"))
+                            if(custom_miktar <= curr_balance):
+                                customer_in_question.make_transaction(transaction = Withdraw(amount=custom_miktar, account_id=customer_in_question.get_account().get_account_number()) , atm = atm1)
+                                flag += 1 
+
+                        elif(withdraw_type == 5):
+                            print("Kart veriliyor")
+                            break
+                            
+                        if(flag == 0):
+                            print("Yetersiz Bakiye \n")
+                            print("Yeni bir miktar seçin \n")
+                            continue   
 
             if(selected_transaction == 5): ##Para Transferi
-                amount_to_be_sent = int(input("Lütfen göndermek istediğiniz miktari girin"))
-                destination_account_number = int(input("Lütfen hedef hesap numarisini girin"))
-                if(customer_in_question.get_account().get_available_balance() >= amount_to_be_sent):
-                    customer_in_question.make_transaction(transaction = Transfer(destination_account_number = destination_account_number , amount=amount_to_be_sent) , atm = atm1)
+                while True: ## Yetersiz bakiye için tanımlanan while döngüsü.
+                    
+                    amount_to_be_sent = int(input("Lütfen göndermek istediğiniz miktari girin"))
 
+                    if(amount_to_be_sent > customer_in_question.get_account().get_available_balance()):
+                        choice = int(input("Yetersiz bakiye.\n 1-Karti ver \n 2- Başka bir miktar gir"))
+                        if(choice == 1): break
+                        if(choice == 2): continue
+                    
+                    else:
+
+                        while True: ## yanlış account number için while döngüsü tanımlanması.
+
+                            destination_account_number = int(input("Lütfen hedef hesap numarisini girin")) ## Doğru amount girildikten sonra destination account sorgulanabilir.
+                            if atm1.find_customer_by_account_number(destination_account_number):
+                                customer_in_question.make_transaction(transaction = Transfer(destination_account_number=destination_account_number, amount=amount_to_be_sent), atm = atm1)
+                                break
+                            else:
+                                choice = int(input("Girdiginiz hesap bulunamadi. \n 1- Karti Ver \n 2 - Yeni hesap numarasi gir")) 
+                                if choice == 1: break
+                                if choice == 2: continue
+                    break
+                  
+                   
 
         else: 
             print("Yanliş Şifre Girdiniz")
+            print("1 - Tekrar Dene \n 2- Karti Ver")
+            choice = int(input("Lütfen yapmak istediğiniz işlemi seçin"))
+            if choice == 1:
+                pass
+            else: 
+                pass
 
     else:print("Bankamizin müsterisi oldugunuza emin misiniz?")
         

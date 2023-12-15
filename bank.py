@@ -66,22 +66,6 @@ class Bank:
         except FileNotFoundError:
             print("ATM file not found. Starting with an empty library.")
 
-  
-
-                   
-
-      
-     
-     
-
-
-  
-
-  
-    
-
-  
-
 
 class ATM:
   def __init__(self, id, location):
@@ -122,6 +106,18 @@ class ATM:
         return customer
       
     return None
+  
+  """def get_account_in_db(self , account_number):
+     
+     for customer in Bank.customer_list:
+        
+        if customer.get_account().get_account_number() == account_number:
+           return True
+        
+     return False"""
+  
+
+
 
 
 

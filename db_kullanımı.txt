@@ -1,0 +1,6 @@
+1- Program text dosyasından customer'ları okur ve kendi customer listesine ekler
+2- Program içinde customer'ların pinlerinin ve balance'larının değişebileciğini farz edelim
+3- Bu fieldlar değiştikçe customer listesi güncellenmelidir.
+4- Güncel liste, program kapanırken txt dosyasına override edilmelidir. 
+5- Bunun yapılabilmesi için balance account class'ında bir parametre olmalıdır, aksi halde obje her oluşturuluşta 0 balance'a sahip olmaktadır.
+şimdilik sadece pin kısmı implemente edilsin

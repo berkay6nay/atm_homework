@@ -118,21 +118,18 @@ class Transfer(Transaction):
         return self.__destination_account_number
     
     def make_transation(self, customer):
-        ##Önce destination account_number'a göre account inquery'si yap.
+        ##Önce destination account_number'a göre account inquery'si yap. ## Bu tasarımda query iki kere gerçekleşiyor,düzeltilmesi lazım.
         for customer_query in Bank.customer_list:
+
             if customer_query.get_account().get_account_number() == self.__destination_account_number:
                 customer_receiving = customer_query
-            else: customer_receiving = None
+            
       
-        if customer_receiving:
-            sending_customer_account = customer.get_account()
-            customer_receiving_account = customer_receiving.get_account()
-            print(str(self.__amount) + "$" + " gönderiliyor")
-            sending_customer_account.update_balance(-(self.__amount))
-            customer_receiving_account.update_balance(self.__amount)
-            print(str(self.__amount) + "$" + " gönderildi")
-
-        else:
-            print("Girdiginiz hesap bulunamadi")
+        sending_customer_account = customer.get_account()
+        customer_receiving_account = customer_receiving.get_account()
+        print(str(self.__amount) + "$" + " gönderiliyor")
+        sending_customer_account.update_balance(-(self.__amount))
+        customer_receiving_account.update_balance(self.__amount)
+        print(str(self.__amount) + "$" + " gönderildi")
 
 

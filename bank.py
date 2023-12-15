@@ -8,6 +8,15 @@ class Bank:
   customer_list = []
   transaction_list = []
   account_list = []
+
+  """@classmethod
+  def get_highest_transaction_id(cls):
+      if not cls.transaction_list:
+          return 1  # Return 1 if the list is empty
+
+        # Use a lambda function to extract the transaction ID for max comparison
+      highest_id_transaction = max(cls.transaction_list, key=lambda transaction: transaction._Transaction__transaction_id)
+      return highest_id_transaction._Transaction__transaction_id"""
   
   def __init__(self, name, bank_code):
     self.__name = name
@@ -35,7 +44,9 @@ class Bank:
                 for line in file:
                     data = line.strip().split(',')
                     name , address, email, phone, status ,card_number,  card_expiry, card_pin, account_number = str(data[0]) ,str(data[1]) , str(data[2]) , str(data[3]), data[4], str(data[5]) , str(data[6]) , int(data[7]) , int(data[8])
-                    customer = Customer(name,address,email,phone,status,card_number,card_expiry,card_pin,account_number)
+                    customer = Customer(name,address,email,phone,status)
+                    customer.set_account(account_number=account_number)
+                    customer.set_card(card_number= card_number , card_expiry = card_expiry, card_pin=card_pin)
                     Bank.customer_list.append(customer)
 
         except FileNotFoundError:
@@ -54,6 +65,14 @@ class Bank:
 
         except FileNotFoundError:
             print("ATM file not found. Starting with an empty library.")
+
+  
+
+                   
+
+      
+     
+     
 
 
   

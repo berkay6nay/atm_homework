@@ -1,14 +1,19 @@
 from customer import Customer , Card, SavingAccount , CheckingAccount
 from constants import CustomerStatus
 from bank import Bank, ATM ,Screen
-from constants import TransactionType
-from transaction import BalanceInquiry,CashDeposit,Withdraw
+from constants import TransactionType, TransactionStatus
+from transaction import BalanceInquiry,CashDeposit,Withdraw,Transfer
+
+from datetime import datetime
 
 ##DAtabase'in Kurulumu
 bank = Bank(name = "YildizBank" , bank_code= "1" )
 bank.read_customer_from_text()
 bank.read_atm_from_text()
 atm1 = Bank.atm_list[0]
+
+for customer in Bank.customer_list:
+    print(str(customer.get_account().get_account_number()))
 
 
 
@@ -39,7 +44,7 @@ while True:
 
             if(selected_transaction == 1): ## Bakiye Inquery
                 
-                customer_in_question.make_transaction(transaction = BalanceInquiry(account_id=customer_in_question.get_account().get_account_number()) , atm = atm1)
+                customer_in_question.make_transaction(transaction = BalanceInquiry( account_id=customer_in_question.get_account().get_account_number()), atm = atm1)
 
             if(selected_transaction == 2): ## Para Yatırma
                 amount = int(input("Yatirmak istediginiz miktari giriniz \n"))
@@ -78,7 +83,14 @@ while True:
                     break
                      
                 if(flag == 0):
-                    print("Yetersiz Bakiye")        
+                    print("Yetersiz Bakiye")   
+
+            if(selected_transaction == 5): ##Para Transferi
+                amount_to_be_sent = int(input("Lütfen göndermek istediğiniz miktari girin"))
+                destination_account_number = int(input("Lütfen hedef hesap numarisini girin"))
+                if(customer_in_question.get_account().get_available_balance() >= amount_to_be_sent):
+                    customer_in_question.make_transaction(transaction = Transfer(destination_account_number = destination_account_number , amount=amount_to_be_sent) , atm = atm1)
+
 
         else: 
             print("Yanliş Şifre Girdiniz")

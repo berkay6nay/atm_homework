@@ -4,14 +4,13 @@
 
 
 class Customer:
-    def __init__(self, name, address, email, phone, status ,card_number,  card_expiry, card_pin, account_number):
+    def __init__(self, name, address, email, phone, status):
         self.__name = name
         self.__address = address
         self.__email = email
         self.__phone = phone
         self.__status = status
-        self.__card = Card(number = card_number , customer_name=name, expiry=  card_expiry , pin=card_pin)
-        self.__account = Account(account_number= account_number)
+        
         
 
     def make_transaction(self, transaction , atm):
@@ -27,11 +26,17 @@ class Customer:
     def get_card(self):
         return self.__card
     
+    def set_card(self, card_number,  card_expiry, card_pin):
+        self.__card = Card(number=card_number , customer_name = self.__name, expiry=card_expiry , pin = card_pin )
+    
     def get_account_number(self):
         return self.__account.__account_number
     
     def get_account(self):
         return self.__account
+    
+    def set_account(self ,account_number):
+        self.__account = Account( account_number = account_number)
     
 
 
@@ -62,8 +67,10 @@ class Account:
 
     def get_available_balance(self):
         return self.__available_balance
+    
     def get_account_number(self):
         return self.__account_number
+    
     def update_balance(self , amount):
         
         self.__available_balance = self.__available_balance + amount

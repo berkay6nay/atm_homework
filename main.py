@@ -7,11 +7,13 @@ from transaction import BalanceInquiry,CashDeposit,Withdraw,Transfer
 from datetime import datetime
 
 ##DAtabase'in Kurulumu
-bank = Bank(name = "YildizBank" , bank_code= "1" )
+"""bank = Bank(name = "YildizBank" , bank_code= "1" )
 bank.read_customer_from_text()
 bank.read_atm_from_text()
-atm1 = Bank.atm_list[0]
+atm1 = Bank.atm_list[0]"""
 
+bank = Bank(name = "YildizBank" , bank_code = "1")
+atm1 = ATM(id = 1 , location = "Istanbul")
 
 
 
@@ -46,51 +48,54 @@ while True:
 
             if(selected_transaction == 1): ## Bakiye Inquery
                 
-                customer_in_question.make_transaction(transaction = BalanceInquiry( account_id=customer_in_question.get_account().get_account_number()), atm = atm1)
+                customer_in_question.make_transaction(transaction = BalanceInquiry( account_id=customer_in_question.get_account().get_account_number() , creation_date= datetime.today().date()), atm = atm1)
 
             if(selected_transaction == 2): ## Para Yatırma
                 amount = int(input("Yatirmak istediginiz miktari giriniz \n"))
                 print("Banknotlar kontrol ediliyor... \n")
-                customer_in_question.make_transaction(transaction = CashDeposit(amount=amount, account_id=customer_in_question.get_account().get_account_number()) , atm = atm1)
+                customer_in_question.make_transaction(transaction = CashDeposit(amount=amount, account_id=customer_in_question.get_account().get_account_number(), creation_date= datetime.today().date()) , atm = atm1)
             
             if(selected_transaction == 3):
                 pass
 
             
 
-                if(selected_transaction == 4): ## Para Çekme
-                    while True: ## Yetersiz bakiye durumunda kullanıcının para çekme menüsüne dönmesi için while döngüsü tanımlandı.
-                        print("Çekmek istediginiz miktari seciniz \n")
-                        print("1 - 20$ \n 2 - 40$ \n 3 - 100$ \n 4 - Custom Amount \n 5 - Cancel") ## Withdraw tipinin seçilmesi
-                        withdraw_type = int(input("Lütfen menüden istediğiniz işlemi seçiniz"))
-                        curr_balance = customer_in_question.get_account().get_available_balance()
-                        flag = 0 ##If statementların kısaltılması için flag değişkeni tanımlanmıştır
-                        if(withdraw_type == 1 and curr_balance >= 20 ): ## Custom withdraw - 20$
-                            customer_in_question.make_transaction(transaction = Withdraw(amount=20, account_id=customer_in_question.get_account().get_account_number()) , atm = atm1)
-                            flag += 1 
+            if(selected_transaction == 4): ## Para Çekme
+                while True: ## Yetersiz bakiye durumunda kullanıcının para çekme menüsüne dönmesi için while döngüsü tanımlandı.
+                    print("Çekmek istediginiz miktari seciniz \n")
+                    print("1 - 20$ \n 2 - 40$ \n 3 - 100$ \n 4 - Custom Amount \n 5 - Cancel") ## Withdraw tipinin seçilmesi
+                    withdraw_type = int(input("Lütfen menüden istediğiniz işlemi seçiniz"))
+                    curr_balance = customer_in_question.get_account().get_available_balance()
+                    flag = 0 ##If statementların kısaltılması için flag değişkeni tanımlanmıştır
+                    if(withdraw_type == 1 and curr_balance >= 20 ): ## Custom withdraw - 20$
+                        customer_in_question.make_transaction(transaction = Withdraw(amount=20, account_id=customer_in_question.get_account().get_account_number() ,creation_date= datetime.today().date()) , atm = atm1)
+                        flag += 1 
+                        break
 
-                        elif(withdraw_type == 2 and curr_balance >= 40): ## Custom withdraw - 40$
-                            customer_in_question.make_transaction(transaction = Withdraw(amount=40, account_id=customer_in_question.get_account().get_account_number()) , atm = atm1)
-                            flag += 1 
-                        
-                        elif(withdraw_type == 3 and curr_balance >= 100): ## Custom withdraw - 100$
-                            customer_in_question.make_transaction(transaction = Withdraw(amount=100, account_id=customer_in_question.get_account().get_account_number()) , atm = atm1)
-                            flag += 1 
+                    elif(withdraw_type == 2 and curr_balance >= 40): ## Custom withdraw - 40$
+                        customer_in_question.make_transaction(transaction = Withdraw(amount=40, account_id=customer_in_question.get_account().get_account_number() ,creation_date= datetime.today().date()) , atm = atm1)
+                        flag += 1 
+                        break
+                    elif(withdraw_type == 3 and curr_balance >= 100): ## Custom withdraw - 100$
+                        customer_in_question.make_transaction(transaction = Withdraw(amount=100, account_id=customer_in_question.get_account().get_account_number() ,creation_date= datetime.today().date()) , atm = atm1)
+                        flag += 1 
+                        break
 
-                        elif(withdraw_type == 4): ## Kullanıcı tarafından girilen amount
-                            custom_miktar = int(input("Cekmek istediginiz miktari giriniz"))
-                            if(custom_miktar <= curr_balance):
-                                customer_in_question.make_transaction(transaction = Withdraw(amount=custom_miktar, account_id=customer_in_question.get_account().get_account_number()) , atm = atm1)
-                                flag += 1 
-
-                        elif(withdraw_type == 5):
-                            print("Kart veriliyor")
+                    elif(withdraw_type == 4): ## Kullanıcı tarafından girilen amount
+                        custom_miktar = int(input("Cekmek istediginiz miktari giriniz"))
+                        if(custom_miktar <= curr_balance):
+                            customer_in_question.make_transaction(transaction = Withdraw(amount=custom_miktar, account_id=customer_in_question.get_account().get_account_number() ,creation_date= datetime.today().date()) , atm = atm1)
+                            flag += 1 
                             break
+
+                    elif(withdraw_type == 5):
+                        print("Kart veriliyor")
+                        break
                             
-                        if(flag == 0):
-                            print("Yetersiz Bakiye \n")
-                            print("Yeni bir miktar seçin \n")
-                            continue   
+                    if(flag == 0):
+                        print("Yetersiz Bakiye \n")
+                        print("Yeni bir miktar seçin \n")
+                        continue   
 
             if(selected_transaction == 5): ##Para Transferi
                 while True: ## Yetersiz bakiye için tanımlanan while döngüsü.
@@ -108,7 +113,9 @@ while True:
 
                             destination_account_number = int(input("Lütfen hedef hesap numarisini girin")) ## Doğru amount girildikten sonra destination account sorgulanabilir.
                             if atm1.find_customer_by_account_number(destination_account_number):
-                                customer_in_question.make_transaction(transaction = Transfer(destination_account_number=destination_account_number, amount=amount_to_be_sent), atm = atm1)
+                                customer_in_question.make_transaction(transaction = Transfer(sending_account_number=customer_in_question.get_account().get_account_number() , 
+                                                                                             destination_account_number=destination_account_number, amount=amount_to_be_sent,creation_date= datetime.today().date()), 
+                                                                                             atm = atm1)
                                 break
                             else:
                                 choice = int(input("Girdiginiz hesap bulunamadi. \n 1- Karti Ver \n 2 - Yeni hesap numarasi gir")) 

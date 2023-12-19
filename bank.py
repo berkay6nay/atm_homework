@@ -21,6 +21,7 @@ class Bank:
   def __init__(self, name, bank_code):
     self.__name = name
     self.__bank_code = bank_code
+    self.read_customer_from_text()
 
   def get_bank_code(self):
     return self.__bank_code
@@ -53,18 +54,7 @@ class Bank:
             print("Customer file not found. Starting with an empty library.")
 
 
-  def read_atm_from_text(self):
-        try:
-            with open("atm.txt", "r") as file:
-                for line in file:
-                    data = line.strip().split(',')
-                    id , location = int(data[0]) , str(data[1])
-                    atm = ATM(id , location)
-                    Bank.atm_list.append(atm)
-                   
-
-        except FileNotFoundError:
-            print("ATM file not found. Starting with an empty library.")
+  
 
 
 class ATM:
@@ -78,6 +68,16 @@ class ATM:
     self.__printer = Printer()
     self.__check_deposit = CheckDeposit()
     self.__cash_deposit = CashDeposit
+    self.add_atm_to_text()
+
+  def add_atm_to_text(self):
+    try:
+      with open("atm.txt" , "a") as file:
+        id = self.__atm_id
+        location = self.__location
+        file.write(f"{id} , {location}")
+    except FileNotFoundError:
+      print("File not found")
 
   def authenticate_user(self , pin , customer):
     if pin == customer.get_card().get_card_pin():  ## Auth prototipi

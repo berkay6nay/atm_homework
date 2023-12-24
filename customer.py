@@ -21,6 +21,14 @@ class Customer:
     
     def get_name(self):
         return self.__name
+    def get_address(self):
+        return self.__address
+    def get_mail(self):
+        return self.__email
+    def get_phone(self):
+        return self.__phone
+    def get_status(self):
+        return self.__status
     
     
     def get_card(self):
@@ -35,11 +43,10 @@ class Customer:
     def get_account(self):
         return self.__account
     
-    def set_account(self ,account_number):
-        self.__account = Account( account_number = account_number)
+    def set_account(self ,account_number,total_balance):
+        self.__account = Account( account_number = account_number , total_balance=total_balance)
 
-    def change_card_pin(self , new_pin):
-        self.get_card().__pin = new_pin ## Pin güncellendiğinde customer listesindeki uygun customer'ın pin field'ı güncellenmelidir
+     ## Pin güncellendiğinde customer listesindeki uygun customer'ın pin field'ı güncellenmelidir
         
     
 
@@ -58,26 +65,32 @@ class Card:
         return self.__card_number
     def get_card_pin(self):
         return self.__pin
-
+    def get_card_expiry(self):
+        return self.__card_expiry
+    def change_card_pin(self , new_pin):
+        self.__pin = new_pin
 
 
 class Account:
-    def __init__(self, account_number):
+    def __init__(self, account_number,total_balance):
         self.__account_number = account_number
-        self.__total_balance = 0.0
+        self.__total_balance = total_balance
         self.__available_balance = 0.0
-        from bank import Bank
-        Bank.account_list.append(self)
+        
+        
 
     def get_available_balance(self):
         return self.__available_balance
+    
+    def get_total_balance(self):
+        return self.__total_balance
     
     def get_account_number(self):
         return self.__account_number
     
     def update_balance(self , amount):
         
-        self.__available_balance = self.__available_balance + amount
+        self.__total_balance = self.__total_balance + amount
 
 
 

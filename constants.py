@@ -2,7 +2,7 @@ from enum import Enum
 
 
 class TransactionType(Enum):
-    BALANCE_INQUIRY, DEPOSIT_CASH, DEPOSIT_CHECK, WITHDRAW, TRANSFER = 1, 2, 3, 4, 5
+    BALANCE_INQUIRY, DEPOSIT_CASH, DEPOSIT_CHECK, WITHDRAW, TRANSFER, CHANGE_PIN = 1, 2, 3, 4, 5, 6
 
 
 class TransactionStatus(Enum):

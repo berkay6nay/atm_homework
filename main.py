@@ -1,15 +1,12 @@
 
 from bank import Bank, ATM 
 from constants import TransactionType
-from transaction import BalanceInquiry,CashDeposit,Withdraw,Transfer
+from transaction import BalanceInquiry,CashDeposit,Withdraw,Transfer, ChangePin
 
 from datetime import datetime
 
 ##DAtabase'in Kurulumu
-"""bank = Bank(name = "YildizBank" , bank_code= "1" )
-bank.read_customer_from_text()
-bank.read_atm_from_text()
-atm1 = Bank.atm_list[0]"""
+
 
 bank = Bank(name = "YildizBank" , bank_code = "1")
 atm1 = ATM(id = 1 , location = "Istanbul")
@@ -68,7 +65,7 @@ while True:
                     screen1.show_message("Çekmek istediginiz miktari seciniz \n")
                     screen1.show_message("1 - 20$ \n 2 - 40$ \n 3 - 100$ \n 4 - Custom Amount \n 5 - Cancel") ## Withdraw tipinin seçilmesi
                     withdraw_type = keypad1.get_input("Lütfen menüden istediğiniz işlemi seçiniz")
-                    curr_balance = customer_in_question.get_account().get_available_balance()
+                    curr_balance = customer_in_question.get_account().get_total_balance()
                     flag = 0 ##If statementların kısaltılması için flag değişkeni tanımlanmıştır
                     if(withdraw_type == 1 and curr_balance >= 20 ): ## Custom withdraw - 20$
                         atm1.make_transaction(transaction = Withdraw(amount=20, account_id=customer_in_question.get_account().get_account_number() ,creation_date= datetime.today().date()) ,
@@ -109,7 +106,7 @@ while True:
                     
                     amount_to_be_sent = keypad1.get_input("Lütfen göndermek istediğiniz miktari girin")
 
-                    if(amount_to_be_sent > customer_in_question.get_account().get_available_balance()):
+                    if(amount_to_be_sent > customer_in_question.get_account().get_total_balance()):
                         choice = keypad1.get_input("Yetersiz bakiye.\n 1-Karti ver \n 2- Başka bir miktar gir")
                         if(choice == 1): break
                         if(choice == 2): continue
@@ -118,7 +115,7 @@ while True:
 
                         while True: ## yanlış account number için while döngüsü tanımlanması.
 
-                            destination_account_number = screen1.get_input("Hedef hesap numarisini girin") ## Doğru amount girildikten sonra destination account sorgulanabilir.
+                            destination_account_number = keypad1.get_input("Hedef hesap numarisini girin") ## Doğru amount girildikten sonra destination account sorgulanabilir.
                             if atm1.find_customer_by_account_number(destination_account_number):
                                 atm1.make_transaction(transaction = Transfer(sending_account_number=customer_in_question.get_account().get_account_number() , 
                                                                                              destination_account_number=destination_account_number, amount=amount_to_be_sent,creation_date= datetime.today().date()), 
@@ -129,6 +126,10 @@ while True:
                                 if choice == 1: break
                                 if choice == 2: continue
                     break
+
+            if selected_transaction == 6:
+                new_pin = keypad1.get_input("Yeni 4 haneli yeni bir şifre girin")
+                atm1.make_transaction(transaction = ChangePin(new_pin= new_pin,account_id=customer_in_question.get_account().get_account_number() , creation_date = datetime.today().date()) , customer= customer_in_question)
                   
                    
 

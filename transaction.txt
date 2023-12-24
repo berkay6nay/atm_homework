@@ -1,2 +1,13 @@
 0 , 2023-12-24 , 1 , TransactionType.BALANCE_INQUIRY 
 1 , 1 , 1 , TransactionType.DEPOSIT_CASH , 100 
+0 , TransactionType.DEPOSIT_CASH, 0 , 1 ,  100 
+0 ,TransactionType.TRANSFER , 2023-12-24 , 1 ,2 ,  50   
+1 ,TransactionType.TRANSFER , 2023-12-24 , 1 ,2 ,  50   
+0 ,TransactionType.TRANSFER , 2023-12-24, 1
+0 ,TransactionType.TRANSFER , 2023-12-24, 1
+0 ,TransactionType.BALANCE_INQUIRY,  2023-12-24 , 1 
+1 , TransactionType.DEPOSIT_CASH, 1 , 1 ,  100 
+2 ,TransactionType.WITHDRAW , 2023-12-24 , 1 ,  40 
+3 ,TransactionType.TRANSFER , 2023-12-24 , 1 ,2 ,  110   
+4 ,TransactionType.BALANCE_INQUIRY,  2023-12-24 , 1 
+5 , TransactionType.DEPOSIT_CASH, 5 , 1 ,  50 

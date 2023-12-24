@@ -11,7 +11,7 @@ class Bank:
   def __init__(self, name, bank_code):
     self.__name = name
     self.__bank_code = bank_code
-    self.read_customer_from_text()
+    
 
   def get_bank_code(self):
     return self.__bank_code
@@ -29,19 +29,7 @@ class Bank:
     Bank.account_list.append(account)
 
 
-  def read_customer_from_text(self):
-        try:
-            with open("customer.txt", "r") as file:
-                for line in file:
-                    data = line.strip().split(',')
-                    name , address, email, phone, status ,card_number,  card_expiry, card_pin, account_number = str(data[0]) ,str(data[1]) , str(data[2]) , str(data[3]), data[4], str(data[5]) , str(data[6]) , int(data[7]) , int(data[8])
-                    customer = Customer(name,address,email,phone,status)
-                    customer.set_account(account_number=account_number)
-                    customer.set_card(card_number= card_number , card_expiry = card_expiry, card_pin=card_pin)
-                    Bank.customer_list.append(customer)
-
-        except FileNotFoundError:
-            print("Customer file not found. Starting with an empty library.")
+  
 
 
   
@@ -59,6 +47,7 @@ class ATM:
     self.__check_deposit = CheckDeposit()
     self.__cash_deposit = CashDeposit
     self.add_atm_to_text()
+    self.read_customer_from_text()
 
   def add_atm_to_text(self):
     try:
@@ -101,14 +90,21 @@ class ATM:
       
     return None
   
-  """def get_account_in_db(self , account_number):
-     
-     for customer in Bank.customer_list:
-        
-        if customer.get_account().get_account_number() == account_number:
-           return True
-        
-     return False"""
+  def read_customer_from_text(self):
+        try:
+            with open("customer.txt", "r") as file:
+                for line in file:
+                    data = line.strip().split(',')
+                    name , address, email, phone, status ,card_number,  card_expiry, card_pin, account_number , total_balance = str(data[0]) ,str(data[1]) , str(data[2]) , str(data[3]), data[4], str(data[5]) , str(data[6]) , int(data[7]) , int(data[8]) , int(data[9])
+                    customer = Customer(name,address,email,phone,status)
+                    customer.set_account(account_number=account_number , total_balance = total_balance)
+                    customer.set_card(card_number= card_number , card_expiry = card_expiry, card_pin=card_pin)
+                    Bank.customer_list.append(customer)
+
+        except FileNotFoundError:
+            print("Customer file not found. Starting with an empty library.")
+
+  
   
 
 
@@ -124,8 +120,7 @@ class CashDispenser:
     None
 
   def can_dispense_cash(self):
-    if self.__total_five_dollar_bills > 0 or self.__total_twenty_dollar_bills > 0 : ##Dispenser'da para var ise True döndür
-      return True
+    pass
 
 
 class Keypad:

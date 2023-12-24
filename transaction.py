@@ -1,5 +1,5 @@
-from abc import ABC, abstractmethod
-from bank import ATM , Bank
+from abc import ABC
+from bank import Bank
 from constants import TransactionType , TransactionStatus
 
 class Transaction(ABC):
@@ -20,11 +20,11 @@ class Transaction(ABC):
         return self.__status
     
 
-    @abstractmethod
+    
     def make_transation(self , customer = None):
         None
 
-    @abstractmethod
+    
     def save_transaction_to_text(self):
         None
     
@@ -51,7 +51,7 @@ class BalanceInquiry(Transaction):
             date = super().get_creation_time()
             account = self.__account_id
             type = str(TransactionType.BALANCE_INQUIRY)
-            file.write(f"{id} , {date} , {account} , {type} \n")
+            file.write(f"{id} ,{type},  {date} , {account} \n")
 
 
     
@@ -98,7 +98,7 @@ class CashDeposit(Deposit):
             account = self.__account_id
             amount = self.__amount
             type = str(TransactionType.DEPOSIT_CASH)
-            file.write(f"{id} , {date} , {account} , {type} , {amount} \n")
+            file.write(f"{id} , {type}, {date} , {account} ,  {amount} \n")
         
     def make_transation(self, customer):
         
@@ -135,7 +135,7 @@ class Withdraw(Transaction):
             account = self.__account_id
             amount = self.__amount
             type = str(TransactionType.WITHDRAW)
-            file.write(f"{id} , {date} , {account} , {type} , {amount} \n")
+            file.write(f"{id} ,{type} , {date} , {account} ,  {amount} \n")
 
 
 
@@ -173,7 +173,7 @@ class Transfer(Transaction):
             type = str(TransactionType.TRANSFER)
             account = self.__sending_account_number
             receiver = self.__destination_account_number
-            file.write(f"{id} , {date} , {account} , {type} , {amount} , {receiver} \n")
+            file.write(f"{id} ,{type} , {date} , {account} ,{receiver} ,  {amount}   \n")
         
 
 

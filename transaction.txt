@@ -1,5 +1,2 @@
-0 , 0 , 1 , TransactionType.DEPOSIT_CASH , 100 
-1 , 2023-12-19 , 1 , TransactionType.WITHDRAW , 20 
-0 , 0 , 1 , TransactionType.DEPOSIT_CASH , 100 
-1 , 2023-12-19 , 1 , TransactionType.TRANSFER , 50 , 2 
-2 , 2023-12-19 , 2 , TransactionType.BALANCE_INQUIRY 
+0 , 2023-12-24 , 1 , TransactionType.BALANCE_INQUIRY 
+1 , 1 , 1 , TransactionType.DEPOSIT_CASH , 100 

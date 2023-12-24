@@ -6,17 +6,7 @@ from customer import Customer
 class Bank:
   atm_list = []
   customer_list = []
-  transaction_list = []
-  account_list = []
-
-  """@classmethod
-  def get_highest_transaction_id(cls):
-      if not cls.transaction_list:
-          return 1  # Return 1 if the list is empty
-
-        # Use a lambda function to extract the transaction ID for max comparison
-      highest_id_transaction = max(cls.transaction_list, key=lambda transaction: transaction._Transaction__transaction_id)
-      return highest_id_transaction._Transaction__transaction_id"""
+  
   
   def __init__(self, name, bank_code):
     self.__name = name
@@ -86,10 +76,14 @@ class ATM:
     
   def get_screen(self):
     return self.__screen
+  def get_keypad(self):
+    return self.__keypad
+  def get_printer(self):
+    return self.__printer
     
 
   def make_transaction(self, customer, transaction):
-    transaction.make_transation(customer = customer)
+    customer.make_transaction(transaction)
   
   
   def find_customer_by_card_number(self, card_number): ##Girilen card number için card'ın customer'ını döndür , yoksa None döndür
@@ -135,8 +129,9 @@ class CashDispenser:
 
 
 class Keypad:
-  def get_input(self):
-    None
+  def get_input(self , message):
+    users_input = int(input(message))
+    return users_input
 
 
 class Screen:
@@ -144,9 +139,7 @@ class Screen:
     print(message)
 
   def get_input(self):
-    transaction_input = int(input("Lütfen yapmak istediğiniz işlemi seçiniz")) ##Kullanıcı tarafından Transaction Type'ın girilmesi
-    return TransactionType(transaction_input)
-    
+    pass
 
 
 class Printer:

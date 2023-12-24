@@ -13,8 +13,8 @@ class Customer:
         
         
 
-    def make_transaction(self, transaction , atm):
-        atm.make_transaction(transaction = transaction , customer = self)
+    def make_transaction(self, transaction):
+        transaction.make_transation(customer = self)
 
     def get_billing_address(self): 
         None

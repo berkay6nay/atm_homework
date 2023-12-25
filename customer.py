@@ -46,7 +46,7 @@ class Customer:
     def set_account(self ,account_number,total_balance):
         self.__account = Account( account_number = account_number , total_balance=total_balance)
 
-     ## Pin güncellendiğinde customer listesindeki uygun customer'ın pin field'ı güncellenmelidir
+     
         
     
 

@@ -21,7 +21,7 @@ class Transaction(ABC):
     
 
     
-    def make_transation(self , customer = None):
+    def make_transation(self ):
         None
 
     
@@ -30,8 +30,6 @@ class Transaction(ABC):
 
     def write_customer_list_to_text(self):
         with open("customer.txt" , "w") as file:
-            """ name , address, email, phone, status ,card_number,  card_expiry, card_pin, account_number , total_balance = str(data[0]) ,str(data[1]) ,
-              str(data[2]) , str(data[3]), data[4], str(data[5]) , str(data[6]) , int(data[7]) , int(data[8]) , int(data[9])"""
             for customer in Bank.customer_list:
                 name = customer.get_name()
                 address = customer.get_address()
@@ -87,20 +85,42 @@ class Deposit(Transaction):
      def get_amount(self):
         return self.__amount
     
-     def make_transation(self,customer = None):
+     def make_transation(self,customer):
          pass
      
              
          
          
 class CheckDeposit(Deposit):
-    def __init__(self, check_number, bank_code):
+    def __init__(self, check_number, bank_code , creation_date , account_id , amount):
+        super().__init__(creation_date = creation_date , amount= amount , account_id= account_id)
         self.__check_number = check_number
         self.__bank_code = bank_code
+        self.__amount = amount
+        self.__account_id = account_id 
+        self.save_transaction_to_text()
         
 
     def get_check_number(self):
         return self.__check_number
+    
+    def make_transation(self, customer):
+        
+        account_in_question = customer.get_account()
+        account_in_question.update_balance(amount = self.__amount)
+        print(str(self.__amount) + "$" + " yatirdiniz \n")
+        print("Yeni bakiyeniz: " + str(account_in_question.get_total_balance()) + "$")
+        super().write_customer_list_to_text()
+
+    def save_transaction_to_text(self):
+        with open("transaction.txt" , "a") as file:
+            id = super().get_transaction_id()
+            date = super().get_creation_time()
+            account = self.__account_id
+            amount = self.__amount
+            check_num = self.__check_number
+            type = str(TransactionType.DEPOSIT_CHECK)
+            file.write(f"{id} , {type}, {date} , {account},{check_num},{amount} \n")
 
 
 class CashDeposit(Deposit):
@@ -110,6 +130,7 @@ class CashDeposit(Deposit):
         self.__account_id = account_id 
         self.__cash_deposit_limit = 100.000
         self.save_transaction_to_text()
+        
     def save_transaction_to_text(self):
         with open("transaction.txt" , "a") as file:
             id = super().get_transaction_id()
@@ -124,7 +145,7 @@ class CashDeposit(Deposit):
         account_in_question = customer.get_account()
         account_in_question.update_balance(amount = self.__amount)
         print(str(self.__amount) + "$" + " yatirdiniz \n")
-        print("Mevcut bakiyeniz: " + str(account_in_question.get_total_balance()) + "$")
+        print("Yeni bakiyeniz: " + str(account_in_question.get_total_balance()) + "$")
         super().write_customer_list_to_text()
 
 
@@ -177,13 +198,14 @@ class Transfer(Transaction):
 
             if customer_query.get_account().get_account_number() == self.__destination_account_number:
                 customer_receiving = customer_query
-            
-      
+                customer_receiving_account = customer_receiving.get_account()
+                customer_receiving_account.update_balance(self.__amount)
+        
         sending_customer_account = customer.get_account()
-        customer_receiving_account = customer_receiving.get_account()
+        
         print(str(self.__amount) + "$" + " gönderiliyor")
         sending_customer_account.update_balance(-(self.__amount))
-        customer_receiving_account.update_balance(self.__amount)
+        
         print(str(self.__amount) + "$" + " gönderildi")
         super().write_customer_list_to_text()
 

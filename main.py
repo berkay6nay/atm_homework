@@ -22,6 +22,7 @@ printer1 = atm1.get_printer()
 ###Kullanıcı Arayüzü Prototipi
 
 while True:
+    screen1.show_message("\n")
     print("Yildiz Teknik Üniversitesi ATM \n")
 
     card_no = input(print("Lütfen Kartinizi Yerleştiriniz(Kart Numaranizi Giriniz) \n"))
@@ -49,12 +50,17 @@ while True:
                 
                 atm1.make_transaction(transaction = BalanceInquiry( account_id=customer_in_question.get_account().get_account_number() , creation_date= datetime.today().date()),
                                        customer=customer_in_question)
+                screen1.show_message("Kart veriliyor... \n")
+                screen1.show_message("Lütfen kartinizi alin")
 
             if(selected_transaction == 2): ## Para Yatırma
                 amount = int(input("Yatirmak istediginiz miktari giriniz \n"))
                 screen1.show_message("Banknotlar kontrol ediliyor... \n")
                 atm1.make_transaction(transaction = CashDeposit(amount=amount, account_id=customer_in_question.get_account().get_account_number(), creation_date= datetime.today().date()) , customer=customer_in_question)
-                
+                screen1.show_message("Kart veriliyor... \n")
+                screen1.show_message("Lütfen kartinizi alin")
+            
+            
             if(selected_transaction == 3):
                 pass
 
@@ -70,18 +76,24 @@ while True:
                     if(withdraw_type == 1 and curr_balance >= 20 ): ## Custom withdraw - 20$
                         atm1.make_transaction(transaction = Withdraw(amount=20, account_id=customer_in_question.get_account().get_account_number() ,creation_date= datetime.today().date()) ,
                                                customer=customer_in_question)
-                        flag += 1 
+                        flag += 1
+                        screen1.show_message("Kart veriliyor... \n")
+                        screen1.show_message("Lütfen kartinizi alin") 
                         break
 
                     elif(withdraw_type == 2 and curr_balance >= 40): ## Custom withdraw - 40$
                         atm1.make_transaction(transaction = Withdraw(amount=40, account_id=customer_in_question.get_account().get_account_number() ,creation_date= datetime.today().date()) , 
                                               customer=customer_in_question)
-                        flag += 1 
+                        flag += 1
+                        screen1.show_message("Kart veriliyor... \n")
+                        screen1.show_message("Lütfen kartinizi alin") 
                         break
                     elif(withdraw_type == 3 and curr_balance >= 100): ## Custom withdraw - 100$
                         atm1.make_transaction(transaction = Withdraw(amount=100, account_id=customer_in_question.get_account().get_account_number() ,creation_date= datetime.today().date()) ,
                                                customer=customer_in_question)
                         flag += 1 
+                        screen1.show_message("Kart veriliyor... \n")
+                        screen1.show_message("Lütfen kartinizi alin")
                         break
 
                     elif(withdraw_type == 4): ## Kullanıcı tarafından girilen amount
@@ -90,10 +102,13 @@ while True:
                             atm1.make_transaction(transaction = Withdraw(amount=custom_miktar, account_id=customer_in_question.get_account().get_account_number() ,creation_date= datetime.today().date()) ,
                                                    customer=customer_in_question)
                             flag += 1 
+                            screen1.show_message("Kart veriliyor... \n")
+                            screen1.show_message("Lütfen kartinizi alin")
                             break
 
                     elif(withdraw_type == 5):
-                        screen1.show_message("Kart veriliyor")
+                        screen1.show_message("Kart veriliyor... \n")
+                        screen1.show_message("Lütfen kartinizi alin")
                         break
                             
                     if(flag == 0):
@@ -108,7 +123,10 @@ while True:
 
                     if(amount_to_be_sent > customer_in_question.get_account().get_total_balance()):
                         choice = keypad1.get_input("Yetersiz bakiye.\n 1-Karti ver \n 2- Başka bir miktar gir")
-                        if(choice == 1): break
+                        if(choice == 1):
+                            screen1.show_message("Kartiniz veriliyor... \n")
+                            screen1.show_message("Lütfen kartinizi alin") 
+                            break
                         if(choice == 2): continue
                     
                     else:
@@ -120,17 +138,26 @@ while True:
                                 atm1.make_transaction(transaction = Transfer(sending_account_number=customer_in_question.get_account().get_account_number() , 
                                                                                              destination_account_number=destination_account_number, amount=amount_to_be_sent,creation_date= datetime.today().date()), 
                                                                                              customer=customer_in_question)
+                                screen1.show_message("Kartiniz veriliyor... \n")
+                                screen1.show_message("Lütfen kartinizi alin") 
                                 break
+
                             else:
                                 choice = keypad1.get_input("Girdiginiz hesap bulunamadi. \n 1- Karti Ver \n 2 - Yeni hesap numarasi gir")
-                                if choice == 1: break
-                                if choice == 2: continue
+                                if choice == 1:
+                                    screen1.show_message("Kartiniz veriliyor... \n")
+                                    screen1.show_message("Lütfen kartinizi alin") 
+                                    break
+                                if choice == 2:continue
+
+                                    
                     break
 
             if selected_transaction == 6:
                 new_pin = keypad1.get_input("Yeni 4 haneli yeni bir şifre girin")
                 atm1.make_transaction(transaction = ChangePin(new_pin= new_pin,account_id=customer_in_question.get_account().get_account_number() , creation_date = datetime.today().date()) , customer= customer_in_question)
-                  
+                screen1.show_message("Kartiniz veriliyor... \n")
+                screen1.show_message("Lütfen kartinizi alin.")  
                    
 
         else: 

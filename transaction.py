@@ -113,7 +113,7 @@ class CashDeposit(Deposit):
     def save_transaction_to_text(self):
         with open("transaction.txt" , "a") as file:
             id = super().get_transaction_id()
-            date = super().get_transaction_id()
+            date = super().get_creation_time()
             account = self.__account_id
             amount = self.__amount
             type = str(TransactionType.DEPOSIT_CASH)
@@ -219,7 +219,7 @@ class ChangePin(Transaction):
         with open("transaction.txt" , "a") as file:
             id = super().get_transaction_id()
             date = super().get_creation_time()
-            type = str(TransactionType.TRANSFER)
+            type = str(TransactionType.CHANGE_PIN)
             account = self.__account_id
             file.write(f"{id} ,{type} , {date}, {account}\n")
         
